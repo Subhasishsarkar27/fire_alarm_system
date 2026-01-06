@@ -1,0 +1,40 @@
+// Pin Definitions
+const int tempPin = A0;      
+const int gasPin = A1;       
+const int buzzerPin = 7;     
+const int ledPin = 13;       
+
+// Thresholds
+const int tempThreshold = 50;   
+const int gasThreshold = 300;   
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int tempValue = analogRead(tempPin);
+  int gasValue = analogRead(gasPin);
+  
+  Serial.print("Temp: ");
+  Serial.print(tempValue);
+  Serial.print("\tGas: ");
+  Serial.println(gasValue);
+  
+  if (tempValue > tempThreshold || gasValue > gasThreshold) {
+    digitalWrite(ledPin, HIGH);  // LED ON
+    // Beep buzzer in pattern
+    for (int i = 0; i < 3; i++) {
+      digitalWrite(buzzerPin, HIGH);
+      delay(200);
+      digitalWrite(buzzerPin, LOW);
+      delay(200);
+    }
+    delay(500); // small pause before next beep sequence
+  } else {
+    digitalWrite(ledPin, LOW);   // LED OFF
+    digitalWrite(buzzerPin, LOW); 
+  }
+}
